@@ -14,6 +14,11 @@ public class XmlCodePageBuilderTest {
 		final InputStream is = getClass().getResourceAsStream("/codepages/test-codepage.xml");
 		Assert.assertNotNull(is);
 		final WbxmlDocument[] documents = XmlCodePageBuilder.build(is);	
+		Assert.assertNotNull(documents);
+		Assert.assertEquals(documents.length, 1);
+		
+		WbxmlDocument wbxmlDoc = documents[0];
+		WbxmlCodePage[] codepages = wbxmlDoc.getCodePages();
+		Assert.assertEquals(codepages.length, 2);
 	}
-	
 }
