@@ -19,17 +19,18 @@ package org.synku4j.wbxml.builder;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import org.synku4j.wbxml.WbxmlCodePage;
-import org.synku4j.wbxml.WbxmlCodePageField;
-import org.synku4j.wbxml.WbxmlDocument;
-import org.synku4j.wbxml.util.WbxmlCodePageFieldWrapper;
-import org.synku4j.wbxml.util.WbxmlCodePageWrapper;
+import org.synku4j.wbxml.core.WbxmlCodePage;
+import org.synku4j.wbxml.core.WbxmlCodePageField;
+import org.synku4j.wbxml.core.WbxmlDocument;
+import org.synku4j.wbxml.core.impl.DefaultWbxmlCodePage;
+import org.synku4j.wbxml.core.impl.DefaultWbxmlCodePageField;
 
 /**
  * The <code>XmlCodePageBuilder</code> class is used to read in an xml stream
@@ -71,14 +72,15 @@ public class XmlCodePageBuilder {
 	
 	private static WbxmlCodePage createWbxmlCodePage(Element element, int publicID, String formalID) {
 		final String strIndex = element.getAttributeValue("index");
-		final String publicFormalID = element.getAttributeValue("formalPublicID");
+		final String formalPublicID = element.getAttributeValue("formalPublicID");
 		final int index = toInt(strIndex);
-		
-		final WbxmlCodePageWrapper codePage = new WbxmlCodePageWrapper(index, publicID, publicFormalID == null ? formalID:publicFormalID); 
-		
+
+		final LinkedList<WbxmlCodePageField> fields = new LinkedList<WbxmlCodePageField>();
 		for (Object fld : element.getChildren("field")) {
-			codePage.addCodePageField(createWbxmlCodePageField(index, (Element)fld));
+			fields.add(createWbxmlCodePageField(index, (Element)fld));
 		}
+
+		final DefaultWbxmlCodePage codePage = new DefaultWbxmlCodePage(formalPublicID,index, fields.toArray(new WbxmlCodePageField[0])); 
 		
 		return codePage;
 	}
@@ -95,7 +97,7 @@ public class XmlCodePageBuilder {
 			e.printStackTrace();
 		}
 		
-		return new WbxmlCodePageFieldWrapper(pageIdx, token, name, modelClass);
+		return new DefaultWbxmlCodePageField(name, modelClass, pageIdx, token);
 	}
 
 	private static int toInt(String str) {
