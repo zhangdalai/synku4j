@@ -12,7 +12,9 @@
 	</parent>
 	<modules>
 		<module>../org.synku4j.wbxml.core</module>
+		<module>../org.synku4j.wbxml.builder</module>
 <!-- 	
+		<module>../org.synku4j.wbxml.core</module>
 		<module>../org.synku4j.wbxml.util</module>
 		<module>../org.synku4j.wbxml.builder</module>
 		<module>../org.synku4j.wbxml.encoder</module>

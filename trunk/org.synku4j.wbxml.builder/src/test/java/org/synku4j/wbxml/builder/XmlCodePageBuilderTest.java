@@ -2,8 +2,8 @@ package org.synku4j.wbxml.builder;
 
 import java.io.InputStream;
 
-import org.synku4j.wbxml.WbxmlCodePage;
-import org.synku4j.wbxml.WbxmlDocument;
+import org.synku4j.wbxml.core.WbxmlCodePage;
+import org.synku4j.wbxml.core.WbxmlDocument;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
