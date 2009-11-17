@@ -8,6 +8,7 @@
 	<version>0.1-SNAPSHOT</version>
 	<modules>
 		<module>../wbxml/org.synku4j.wbxml</module>
+		<module>../activesync/org.synku4j.activesync</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>
