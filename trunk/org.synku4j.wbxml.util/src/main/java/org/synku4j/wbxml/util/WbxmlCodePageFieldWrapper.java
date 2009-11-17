@@ -16,9 +16,9 @@
 
 package org.synku4j.wbxml.util;
 
-import org.synku4j.wbxml.WbxmlCodePageField;
-import org.synku4j.wbxml.annotation.WbxmlField;
-import org.synku4j.wbxml.annotation.WbxmlPage;
+import org.synku4j.wbxml.annotations.WbxmlField;
+import org.synku4j.wbxml.annotations.WbxmlPage;
+import org.synku4j.wbxml.core.WbxmlCodePageField;
 
 public final class WbxmlCodePageFieldWrapper implements WbxmlCodePageField {
 	private final int pageIdx;

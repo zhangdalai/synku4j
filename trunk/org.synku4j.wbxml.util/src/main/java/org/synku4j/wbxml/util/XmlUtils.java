@@ -22,8 +22,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
-import org.synku4j.wbxml.WbxmlCodePageField;
-import org.synku4j.wbxml.WbxmlCodePageFinder;
+import org.synku4j.wbxml.core.WbxmlCodePageField;
+import org.synku4j.wbxml.core.WbxmlCodePageFinder;
 import org.synku4j.wbxml.decoder.WbxmlDecoder;
 import org.synku4j.wbxml.decoder.WbxmlDecoderException;
 import org.synku4j.wbxml.decoder.event.WbxmlEvent;

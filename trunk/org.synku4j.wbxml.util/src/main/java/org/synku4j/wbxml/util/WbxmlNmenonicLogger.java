@@ -25,7 +25,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Stack;
 
-import org.synku4j.wbxml.WbxmlConstants;
+import org.synku4j.wbxml.core.WbxmlConstants;
 
 /**
  * @author joolski

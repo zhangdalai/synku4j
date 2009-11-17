@@ -26,10 +26,10 @@ import java.util.ListIterator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.synku4j.wbxml.WbxmlCodePage;
-import org.synku4j.wbxml.WbxmlCodePageField;
-import org.synku4j.wbxml.annotation.WbxmlField;
-import org.synku4j.wbxml.annotation.WbxmlPage;
+import org.synku4j.wbxml.annotations.WbxmlField;
+import org.synku4j.wbxml.annotations.WbxmlPage;
+import org.synku4j.wbxml.core.WbxmlCodePage;
+import org.synku4j.wbxml.core.WbxmlCodePageField;
 
 /**
  * The <code>WbxmlUtil</code> class.
