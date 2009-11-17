@@ -16,15 +16,8 @@
 		<module>../org.synku4j.wbxml.annotations</module>
 		<module>../org.synku4j.wbxml.decoder</module>
 		<module>../org.synku4j.wbxml.encoder</module>
-		
-<!-- 	
-		<module>../org.synku4j.wbxml.core</module>
-		<module>../org.synku4j.wbxml.util</module>
-		<module>../org.synku4j.wbxml.builder</module>
-		<module>../org.synku4j.wbxml.encoder</module>
-		<module>../org.synku4j.wbxml.decoder</module>
 		<module>../org.synku4j.wbxml.marshal</module>
- -->	
+		<module>../org.synku4j.wbxml.util</module>
 	</modules>
 	<dependencies>
 		<dependency>
