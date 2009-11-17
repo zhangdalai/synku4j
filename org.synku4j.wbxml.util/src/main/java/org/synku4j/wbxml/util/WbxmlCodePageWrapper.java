@@ -19,9 +19,9 @@ package org.synku4j.wbxml.util;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.synku4j.wbxml.WbxmlCodePage;
-import org.synku4j.wbxml.WbxmlCodePageField;
-import org.synku4j.wbxml.annotation.WbxmlPage;
+import org.synku4j.wbxml.annotations.WbxmlPage;
+import org.synku4j.wbxml.core.WbxmlCodePage;
+import org.synku4j.wbxml.core.WbxmlCodePageField;
 
 /**
  * The <code>CodePageWrapper</code> class is a simple implementation of the <code>CodePage</code> interface.
