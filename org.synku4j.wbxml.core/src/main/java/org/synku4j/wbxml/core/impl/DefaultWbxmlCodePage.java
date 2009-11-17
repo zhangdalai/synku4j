@@ -10,11 +10,20 @@ public class DefaultWbxmlCodePage implements WbxmlCodePage {
 	private final int index;
 	private final WbxmlCodePageField[] fields;
 
+	public DefaultWbxmlCodePage(String formalPublicId, int index, WbxmlCodePageField[] fields) {
+		this(formalPublicId, 0, index, fields);
+	}
+	
 	public DefaultWbxmlCodePage(String formalPublicId, int publicId, int index, WbxmlCodePageField[] fields) {
 		this.formalPublicId = formalPublicId;
 		this.publicId = publicId;
 		this.index = index;
 		this.fields = fields;
+		
+		if (publicId == 0 && formalPublicId != null && formalPublicId.length() > 0) {
+			throw new IllegalArgumentException("publicId cannot be 0 if a formalPublicId is supplied");
+		}
+		
 	}
 
 	@Override
@@ -36,5 +45,4 @@ public class DefaultWbxmlCodePage implements WbxmlCodePage {
 	public int getPublicID() {
 		return publicId;
 	}
-
 }
