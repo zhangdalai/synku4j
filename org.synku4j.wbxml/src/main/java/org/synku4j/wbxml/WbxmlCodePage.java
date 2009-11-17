@@ -17,7 +17,7 @@
 package org.synku4j.wbxml;
 
 /**
- * The <code>CodePage</code> interface defines the
+ * The <code>WbxmlCodePage</code> interface defines the attributes of a WBXML codepage. 
  * 
  * @author Jools Enticknap
  */
@@ -37,11 +37,6 @@ public interface WbxmlCodePage {
 	 * @return the code page index.
 	 */
 	int getIndex();
-
-	/**
-	 * @return the namespace for example "MetInf"
-	 */
-	//String nameSpace();
 
 	/**
 	 * @return the fields which are defined for this code page.

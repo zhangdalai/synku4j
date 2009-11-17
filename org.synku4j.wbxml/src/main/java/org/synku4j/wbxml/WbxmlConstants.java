@@ -14,10 +14,14 @@
  * limitations under the License.
  */
 
-
-
 package org.synku4j.wbxml;
 
+/**
+ * The <code>WbxmlConstants</code> interface defines a number of the standard
+ * constants required to parse a WBXML stream. 
+ * 
+ * @author Jools Enticknap
+ */
 public interface WbxmlConstants {        // 12345678
 	static final int SWITCH_PAGE = 0x00; // 00000000
 	static final int END         = 0x01; // 00000001

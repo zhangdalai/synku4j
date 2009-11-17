@@ -17,7 +17,14 @@
 
 package org.synku4j.wbxml;
 
+/**
+ * The <code>WbxmlCodePageFinder</code> interface is used to locate
+ * a codepage field when parsing a wbxml stream.
+ * 
+ * @author Jools Enticknap
+ */
 public interface WbxmlCodePageFinder {
+	
 	WbxmlCodePageField find(int codePageIdx, int fieldId);
 	
 	WbxmlCodePageField find(int codePageIdx, String fieldName);
