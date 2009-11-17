@@ -21,9 +21,8 @@ import java.io.OutputStream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.synku4j.wbxml.WbxmlConstants;
-import org.synku4j.wbxml.annotation.WbxmlField;
-import org.synku4j.wbxml.context.WbxmlContext;
+import org.synku4j.wbxml.core.WbxmlConstants;
+import org.synku4j.wbxml.core.context.WbxmlContext;
 
 public final class WbxmlEncoder {
 
@@ -103,39 +102,39 @@ public final class WbxmlEncoder {
 		writeByte(os, encoding);
 	}
 
-	public static void pushElement(final WbxmlContext cntx, final OutputStream os, final WbxmlField field, final boolean hasContent) throws IOException {
-		if (log.isDebugEnabled()) {
-			log.debug("pushElement [index = "+Integer.toHexString(field.index())+"] [has content ="+hasContent+"]");
-		}
-		
-		int tagKey = field.index();
-
-		if (hasContent) {
-			tagKey |= 0x40;
-		}
-
-		writeByte(os, tagKey);
-	}
-
-	public static void pushElement(final WbxmlContext cntx, final OutputStream os, final WbxmlField field, final String content) throws IOException {
-		if (content == null || content.length() == 0) {
-			return;
-		}
-
-		pushElement(cntx, os, field, true);
-		inlineString(cntx, os, content);
-		popElement(cntx, os);
-	}
-
-	public static void pushOpaque(final WbxmlContext cntx, final OutputStream os, final WbxmlField field, final byte[] content) throws IOException {
-		if (content == null || content.length == 0) {
-			return;
-		}
-
-		pushElement(cntx, os, field, true);
-		opaque(cntx, os, content);
-		popElement(cntx, os);
-	}
+//	public static void pushElement(final WbxmlContext cntx, final OutputStream os, final WbxmlField field, final boolean hasContent) throws IOException {
+//		if (log.isDebugEnabled()) {
+//			log.debug("pushElement [index = "+Integer.toHexString(field.index())+"] [has content ="+hasContent+"]");
+//		}
+//		
+//		int tagKey = field.index();
+//
+//		if (hasContent) {
+//			tagKey |= 0x40;
+//		}
+//
+//		writeByte(os, tagKey);
+//	}
+//
+//	public static void pushElement(final WbxmlContext cntx, final OutputStream os, final WbxmlField field, final String content) throws IOException {
+//		if (content == null || content.length() == 0) {
+//			return;
+//		}
+//
+//		pushElement(cntx, os, field, true);
+//		inlineString(cntx, os, content);
+//		popElement(cntx, os);
+//	}
+//
+//	public static void pushOpaque(final WbxmlContext cntx, final OutputStream os, final WbxmlField field, final byte[] content) throws IOException {
+//		if (content == null || content.length == 0) {
+//			return;
+//		}
+//
+//		pushElement(cntx, os, field, true);
+//		opaque(cntx, os, content);
+//		popElement(cntx, os);
+//	}
 
 	public static void opaque(final WbxmlContext cntx, final OutputStream os, final byte[] content) throws IOException {
 		if (log.isDebugEnabled()) {
