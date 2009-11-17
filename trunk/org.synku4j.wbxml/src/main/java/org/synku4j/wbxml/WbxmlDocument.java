@@ -18,6 +18,12 @@ package org.synku4j.wbxml;
 
 import java.util.Arrays;
 
+/**
+ * The <code>WbxmlDocument</code> represents a set of code pages and the root 
+ * definition.
+ *
+ * @author Jools Enticknap
+ */
 public final class WbxmlDocument {
 	private final int publicID;
 	private final String formalPublicID;
