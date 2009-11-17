@@ -1,0 +1,14 @@
+<testng-results>
+  <reporter-output>
+  </reporter-output>
+  <suite name="Command line suite">
+    <groups>
+    </groups>
+    <test name="Command line test">
+      <class name="org.synku4j.wbxml.marshal.WbxmlMarshallerTest">
+        <test-method status="PASS" signature="testMarshaller()" name="testMarshaller" duration-ms="4" started-at="2009-11-17T15:53:33Z" finished-at="2009-11-17T15:53:33Z">
+        </test-method>
+      </class>
+    </test>
+  </suite>
+</testng-results>
