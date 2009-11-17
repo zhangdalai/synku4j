@@ -4,6 +4,7 @@
 	<groupId>org.synku4j.wbxml</groupId>
 	<artifactId>org.synku4j.wbxml.encoder</artifactId>
 	<version>0.1-SNAPSHOT</version>
+	<name>Synku4J WBXML encoder</name>
 	<parent>
 		<artifactId>org.synku4j.wbxml</artifactId>
 		<groupId>org.synku4j.wbxml</groupId>
