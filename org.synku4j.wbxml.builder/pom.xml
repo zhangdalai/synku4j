@@ -32,5 +32,10 @@
 			<artifactId>org.synku4j.wbxml</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.synku4j</groupId>
+			<artifactId>org.synku4j.wbxml.util</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 </project>
