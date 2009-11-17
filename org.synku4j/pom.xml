@@ -7,7 +7,7 @@
 	<name>Synku4j</name>
 	<version>0.1-SNAPSHOT</version>
 	<modules>
-		<module>../org.synku4j.wbxml</module>
+		<module>../wbxml/org.synku4j.wbxml</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>
