@@ -24,12 +24,12 @@ import java.util.Stack;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.synku4j.wbxml.WbxmlCodePageField;
-import org.synku4j.wbxml.WbxmlCodePageFinder;
-import org.synku4j.wbxml.WbxmlConstants;
+import org.synku4j.wbxml.core.WbxmlCodePageField;
+import org.synku4j.wbxml.core.WbxmlCodePageFinder;
+import org.synku4j.wbxml.core.WbxmlConstants;
+import org.synku4j.wbxml.core.impl.DefaultWbxmlCodePageField;
 import org.synku4j.wbxml.decoder.event.WbxmlEvent;
 import org.synku4j.wbxml.decoder.event.WbxmlEvent.EventType;
-import org.synku4j.wbxml.util.WbxmlUtil;
 
 /**
  * @author Jools Enticknap
@@ -220,7 +220,7 @@ public class WbxmlDecoder {
 					field = finder.find(codepage, streamByte);
 				} else {
 					int code = streamByte;
-					field = WbxmlUtil.createCodePageField(code, "unknown_"+Integer.toHexString(code), codepage);
+					field = new DefaultWbxmlCodePageField("unknown_"+Integer.toHexString(code), null, codepage, code);
 				}
 
 				if (field == null) {
