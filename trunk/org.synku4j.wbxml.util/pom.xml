@@ -14,7 +14,12 @@
 		<dependency>
 			<groupId>org.synku4j</groupId>
 			<artifactId>org.synku4j.wbxml</artifactId>
-			<version>0.1-SNAPSHOT</version>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.synku4j</groupId>
+			<artifactId>org.synku4j.wbxml.decoder</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 </project>
