@@ -5,6 +5,7 @@
 	<artifactId>org.synku4j.wbxml.decoder</artifactId>
 	<version>0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
+	<name>Synku4J WBXML decoder</name>
 	<parent>
 		<groupId>org.synku4j.wbxml</groupId>
 		<artifactId>org.synku4j.wbxml</artifactId>
