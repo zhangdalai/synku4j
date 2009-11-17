@@ -19,11 +19,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.synku4j.wbxml</groupId>
-			<artifactId>org.synku4j.wbxml.annotations</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.synku4j.wbxml</groupId>
 			<artifactId>org.synku4j.wbxml.encoder</artifactId>
 			<version>${project.version}</version>
 		</dependency>
