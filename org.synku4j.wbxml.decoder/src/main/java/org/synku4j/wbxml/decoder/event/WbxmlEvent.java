@@ -18,7 +18,7 @@ package org.synku4j.wbxml.decoder.event;
 
 import java.util.EventObject;
 
-import org.synku4j.wbxml.WbxmlCodePageField;
+import org.synku4j.wbxml.core.WbxmlCodePageField;
 import org.synku4j.wbxml.decoder.WbxmlDecoder;
 
 public class WbxmlEvent extends EventObject {

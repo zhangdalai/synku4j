@@ -20,8 +20,8 @@ package org.synku4j.wbxml.decoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.synku4j.wbxml.WbxmlCodePageField;
-import org.synku4j.wbxml.WbxmlCodePageFinder;
+import org.synku4j.wbxml.core.WbxmlCodePageField;
+import org.synku4j.wbxml.core.WbxmlCodePageFinder;
 
 public abstract class AbstractCodePageFinder implements WbxmlCodePageFinder {
 	
