@@ -14,7 +14,6 @@ import com.zynku.sync.activesync.context.ActiveSyncContext;
 import com.zynku.sync.activesync.model.FolderHierachy;
 import com.zynku.sync.activesync.model.folderheirachy.FolderSyncResponse;
 import com.zynku.sync.activesync.wbxml.marshal.FolderHeirachyMarshaller;
-import com.zynku.sync.wbxml.decoder.WbxmlDecoderException;
 
 public class InitialFolderSyncHandler extends AbstractHttpHandler<FolderSyncResponse> {
 	
