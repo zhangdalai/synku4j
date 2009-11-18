@@ -1,8 +1,0 @@
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="org.synku4j.activesync.client">
-  <test verbose="2" name="org.synku4j.activesync.client.ActiveSyncClientTest" annotations="JDK">
-    <classes>
-      <class name="org.synku4j.activesync.client.ActiveSyncClientTest"/>
-    </classes>
-  </test>
-</suite>
