@@ -1,0 +1,14 @@
+<testng-results>
+  <reporter-output>
+  </reporter-output>
+  <suite name="org.synku4j.activesync.client">
+    <groups>
+    </groups>
+    <test name="org.synku4j.activesync.client.ActiveSyncClientTest">
+      <class name="org.synku4j.activesync.client.ActiveSyncClientTest">
+        <test-method status="PASS" signature="testFolderSync()" name="testFolderSync" duration-ms="1373" started-at="2009-11-18T13:59:26Z" finished-at="2009-11-18T13:59:27Z">
+        </test-method>
+      </class>
+    </test>
+  </suite>
+</testng-results>
