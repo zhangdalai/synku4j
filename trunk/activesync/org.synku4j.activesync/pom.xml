@@ -11,6 +11,10 @@
 		<artifactId>org.synku4j</artifactId>
 		<version>0.1-SNAPSHOT</version>
 	</parent>
+	<modules>
+		<module>../org.synku4j.activesync.model</module>
+		<module>../org.synku4j.activesync.wbxml</module>
+	</modules>
 	<build>
 		<plugins>
 			<plugin>
@@ -24,5 +28,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
