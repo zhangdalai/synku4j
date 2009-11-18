@@ -42,7 +42,6 @@ public class ActiveSyncClient {
 		acntx.setServerURL(serverURL);
 		
 		asController = new ActiveSyncController(acntx);
-		
 	}
 	
 	public List<ActiveSyncApplicationData> getContacts() throws HttpException, IOException {
