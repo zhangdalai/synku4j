@@ -5,6 +5,7 @@
 	<artifactId>org.synku4j.activesync.model</artifactId>
 	<version>0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
+	<name>Synku4J ACTIVESYNC model</name>
 	<parent>
 		<groupId>org.synku4j.activesync</groupId>
 		<artifactId>org.synku4j.activesync</artifactId>
