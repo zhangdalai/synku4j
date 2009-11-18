@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.synku4j.activesync.client.ActiveSyncClientTest" failures="0" tests="1" time="1.389" errors="0">
+<testsuite name="org.synku4j.activesync.client.ActiveSyncClientTest" failures="0" tests="1" time="5.412" errors="0">
   <properties/>
-  <testcase name="testFolderSync" time="1.373" classname="org.synku4j.activesync.client.ActiveSyncClientTest"/>
+  <testcase name="testFolderSync" time="5.398" classname="org.synku4j.activesync.client.ActiveSyncClientTest"/>
 </testsuite>
