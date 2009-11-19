@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import com.zynku.sync.activesync.context.ActiveSyncContext;
 import com.zynku.sync.activesync.control.ActiveSyncController;
 import com.zynku.sync.activesync.model.ActiveSyncApplicationData;
+import com.zynku.sync.activesync.model.Folder;
 
 public class ActiveSyncClientTest {
 	
@@ -28,6 +29,7 @@ public class ActiveSyncClientTest {
 		
 		final ActiveSyncController asController = new ActiveSyncController(cntx);
 		List<ActiveSyncApplicationData> contacts = asController.getContacts();
+		final List<Folder> folders = cntx.getFolders();
 		System.out.println("contacts = "+contacts.size());
 	}
 	
