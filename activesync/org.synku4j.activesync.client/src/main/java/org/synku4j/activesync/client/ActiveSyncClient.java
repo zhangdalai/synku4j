@@ -9,6 +9,8 @@ import org.apache.commons.httpclient.HttpException;
 import com.zynku.sync.activesync.context.ActiveSyncContext;
 import com.zynku.sync.activesync.control.ActiveSyncController;
 import com.zynku.sync.activesync.model.ActiveSyncApplicationData;
+import com.zynku.sync.activesync.model.Folder;
+import com.zynku.sync.activesync.model.FolderType;
 
 /**
  * The <code>ActiveSyncClient</code> is the client class used to access an
@@ -40,6 +42,17 @@ public class ActiveSyncClient {
 		acntx.setDeviceId("Appl9C808MH40JW");
 		acntx.setDeviceType("iPod");
 		acntx.setServerURL(serverURL);
+		
+		// TODO: Get the default folders from the client context
+		// 
+		// [Folder [displayName=Contacts, parentId=0, serverId=Contact:DEFAULT, type=DEFAULT_CONTACTS]]
+		// 
+		Folder contactsFolder = new Folder();
+		contactsFolder.setDisplayName("Contacts");
+		contactsFolder.setParentId("0");
+		contactsFolder.setServerId("Contact:DEFAULT");
+		contactsFolder.setType(FolderType.DEFAULT_CONTACTS);
+		acntx.getFolders().add(contactsFolder);
 		
 		asController = new ActiveSyncController(acntx);
 	}
