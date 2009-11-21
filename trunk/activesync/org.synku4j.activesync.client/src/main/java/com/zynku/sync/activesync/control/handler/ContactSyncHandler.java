@@ -144,11 +144,11 @@ public class ContactSyncHandler extends AbstractHttpHandler<ContactSyncResponse>
 		asc.setCollectionId(folder.getServerId());
 		asc.setChanges(Boolean.TRUE);
 		asc.setDeleteAsMoves(Boolean.TRUE);
-		asc.setWindowSize(20);
+		asc.setWindowSize(1000);
 
 		final AirSyncBaseBodyPreference bodyPref = new AirSyncBaseBodyPreference();
 		bodyPref.setType("1"); // plain text
-		bodyPref.setTruncationSize(32768); // no more that 32K per record
+		//bodyPref.setTruncationSize(32768); // no more that 32K per record
 
 		final AirSyncBase asb = new AirSyncBase();
 		asb.setBodyPreference(bodyPref);
