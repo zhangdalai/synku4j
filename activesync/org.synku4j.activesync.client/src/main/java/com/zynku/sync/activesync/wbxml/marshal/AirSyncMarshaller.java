@@ -24,6 +24,7 @@ import com.zynku.sync.activesync.wbxml.codepage.AirSyncBaseCodePageField;
 import com.zynku.sync.activesync.wbxml.codepage.AirSyncCodePage;
 import com.zynku.sync.activesync.wbxml.codepage.AirSyncCodePageField;
 import com.zynku.sync.activesync.wbxml.codepage.Contacts2CodePage;
+import com.zynku.sync.activesync.wbxml.codepage.Contacts2CodePageField;
 import com.zynku.sync.activesync.wbxml.codepage.ContactsCodePage;
 import com.zynku.sync.wbxml.CodePage;
 import com.zynku.sync.wbxml.decoder.WbxmlDecoder;
@@ -150,6 +151,7 @@ public final class AirSyncMarshaller extends AbstractMarshaller<AirSync> {
 		final AirSync airSync = new AirSync();
 		
 		try {
+			Contacts2CodePageField.values();
 			final WbxmlDecoder decoder = new WbxmlDecoder(is, ActiveSyncCodePageLookup.getInstance());
 			WbxmlEvent event;
 			AirSyncCollection collection = null;

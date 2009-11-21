@@ -24,7 +24,7 @@ public final class ActiveSyncCodePageLookup implements CodePageLookup {
 	public CodePageField lookup(final int codePage, final int fieldId) {
 		final Map<Integer, CodePageField> byFieldId = FIELDBYID.get(codePage);
 		if (byFieldId == null) {
-			throw new IllegalStateException("Unknown codepage ("+codePage+"), field ("+fieldId+")");
+			throw new IllegalStateException("Unknown codepage (0x"+Integer.toString(codePage, 16)+"), field (0x"+Integer.toString(fieldId)+")");
 		}
 		
 		return FIELDBYID.get(codePage).get(fieldId);
