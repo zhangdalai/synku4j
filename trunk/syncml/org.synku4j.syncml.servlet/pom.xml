@@ -10,4 +10,11 @@
 		<groupId>org.synku4j.syncml</groupId>
 		<version>0.2-SNAPSHOT</version>
 	</parent>
+	<dependencies>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
 </project>
