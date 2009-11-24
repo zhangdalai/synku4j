@@ -15,7 +15,12 @@
 			<id>synku4j-snapshot</id>
 			<url>http://maven.synku4j.org/archiva/repository/synku4j-snapshot/</url>
 		</snapshotRepository>
+		<repository>
+                        <id>synku4j-releases</id>
+                        <url>http://maven.synku4j.org/archiva/repository/synku4j-releases</url>
+                </repository>
 	</distributionManagement>
+
 	
 	<scm>
 		<connection>scm:svn:https://synku4j.googlecode.com/svn/tags/org.synku4j-0.1</connection>
@@ -31,6 +36,17 @@
 			</releases>
 			<snapshots>
 				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>synku4j-releases</id>
+			<name>synku4j-releases</name>
+			<url>http://maven.synku4j.org/archiva/repository/synku4j-releases/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>flase</enabled>
 			</snapshots>
 		</repository>
 	</repositories>
