@@ -11,4 +11,21 @@
 		<groupId>org.synku4j.syncml</groupId>
 		<version>0.2-SNAPSHOT</version>
 	</parent>
+	<dependencies>
+		<dependency>
+			<groupId>org.synku4j.wbxml</groupId>
+			<artifactId>org.synku4j.wbxml.annotations</artifactId>
+			<version>0.2-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.synku4j.syncml</groupId>
+			<artifactId>org.synku4j.syncml.wbxml</artifactId>
+			<version>0.2-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.synku4j.wbxml</groupId>
+			<artifactId>org.synku4j.wbxml.core</artifactId>
+			<version>0.2-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
 </project>
