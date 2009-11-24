@@ -3,12 +3,12 @@
 	<groupId>org.synku4j.wbxml</groupId>
 	<artifactId>org.synku4j.wbxml.builder</artifactId>
 	<packaging>jar</packaging>
-	<version>0.1</version>
+	<version>0.2-SNAPSHOT</version>
 	<name>Synku4J WBXML builder</name>
 	<parent>
 		<groupId>org.synku4j.wbxml</groupId>
 		<artifactId>org.synku4j.wbxml</artifactId>
-		<version>0.1</version>
+		<version>0.2-SNAPSHOT</version>
 	</parent>
 	<dependencies>
 		<dependency>
