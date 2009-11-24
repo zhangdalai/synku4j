@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.synku4j</groupId>
 		<artifactId>org.synku4j</artifactId>
-		<version>0.1</version>
+		<version>0.2-SNAPSHOT</version>
 	</parent>
 	<modules>
 		<module>../org.synku4j.wbxml.core</module>
