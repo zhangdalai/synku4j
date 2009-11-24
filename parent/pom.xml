@@ -8,6 +8,7 @@
 	<modules>
 		<module>../wbxml/org.synku4j.wbxml</module>
 		<module>../activesync/org.synku4j.activesync</module>
+		<module>../syncml/org.synku4j.syncml</module>
 	</modules>
 
 	<distributionManagement>
