@@ -17,4 +17,25 @@
 		<module>../org.synku4j.syncml.spi</module>
 		<module>../org.synku4j.syncml.servlet</module>
 	</modules>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>5.10</version>
+			<scope>test</scope>
+			<classifier>jdk15</classifier>
+		</dependency>
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<scope>provided</scope>
+				<version>2.5</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 </project>

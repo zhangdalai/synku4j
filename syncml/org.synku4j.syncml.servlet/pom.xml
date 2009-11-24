@@ -11,6 +11,14 @@
 		<version>0.2-SNAPSHOT</version>
 	</parent>
 	<dependencies>
+		<!-- internal -->
+		<dependency>
+			<groupId>org.synku4j.syncml</groupId>
+			<artifactId>org.synku4j.syncml.spi</artifactId>
+			<version>0.2-SNAPSHOT</version>
+		</dependency>
+
+		<!-- external -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
