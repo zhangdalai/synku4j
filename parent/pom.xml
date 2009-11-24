@@ -1,11 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.synku4j</groupId>
 	<artifactId>org.synku4j</artifactId>
 	<packaging>pom</packaging>
 	<name>Synku4j</name>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.1</version>
 	<modules>
 		<module>../wbxml/org.synku4j.wbxml</module>
 		<module>../activesync/org.synku4j.activesync</module>
@@ -17,7 +16,11 @@
 			<url>http://maven.synku4j.org/archiva/repository/synku4j-snapshot/</url>
 		</snapshotRepository>
 	</distributionManagement>
-
+	
+	<scm>
+		<connection>scm:svn:https://synku4j.googlecode.com/svn/tags/org.synku4j-0.1</connection>
+	</scm>
+	
 	<repositories>
 		<repository>
 			<id>synku4j-snapshot</id>
@@ -31,7 +34,7 @@
 			</snapshots>
 		</repository>
 	</repositories>
-	
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
