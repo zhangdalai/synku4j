@@ -102,39 +102,37 @@ public final class WbxmlEncoder {
 		writeByte(os, encoding);
 	}
 
-//	public static void pushElement(final WbxmlContext cntx, final OutputStream os, final WbxmlField field, final boolean hasContent) throws IOException {
-//		if (log.isDebugEnabled()) {
-//			log.debug("pushElement [index = "+Integer.toHexString(field.index())+"] [has content ="+hasContent+"]");
-//		}
-//		
-//		int tagKey = field.index();
-//
-//		if (hasContent) {
-//			tagKey |= 0x40;
-//		}
-//
-//		writeByte(os, tagKey);
-//	}
-//
-//	public static void pushElement(final WbxmlContext cntx, final OutputStream os, final WbxmlField field, final String content) throws IOException {
-//		if (content == null || content.length() == 0) {
-//			return;
-//		}
-//
-//		pushElement(cntx, os, field, true);
-//		inlineString(cntx, os, content);
-//		popElement(cntx, os);
-//	}
-//
-//	public static void pushOpaque(final WbxmlContext cntx, final OutputStream os, final WbxmlField field, final byte[] content) throws IOException {
-//		if (content == null || content.length == 0) {
-//			return;
-//		}
-//
-//		pushElement(cntx, os, field, true);
-//		opaque(cntx, os, content);
-//		popElement(cntx, os);
-//	}
+	public static void pushElement(final WbxmlContext cntx, final OutputStream os, int token, final boolean hasContent) throws IOException {
+		if (log.isDebugEnabled()) {
+			log.debug("pushElement [index = "+Integer.toHexString(token)+"] [has content ="+hasContent+"]");
+		}
+
+		if (hasContent) {
+			token |= 0x40;
+		}
+
+		writeByte(os, token);
+	}
+
+	public static void pushElement(final WbxmlContext cntx, final OutputStream os, final int token, final String content) throws IOException {
+		if (content == null || content.length() == 0) {
+			return;
+		}
+
+		pushElement(cntx, os, token, true);
+		inlineString(cntx, os, content);
+		popElement(cntx, os);
+	}
+
+	public static void pushOpaque(final WbxmlContext cntx, final OutputStream os, final int token, final byte[] content) throws IOException {
+		if (content == null || content.length == 0) {
+			return;
+		}
+
+		pushElement(cntx, os, token, true);
+		opaque(cntx, os, content);
+		popElement(cntx, os);
+	}
 
 	public static void opaque(final WbxmlContext cntx, final OutputStream os, final byte[] content) throws IOException {
 		if (log.isDebugEnabled()) {
@@ -172,10 +170,6 @@ public final class WbxmlEncoder {
 		os.write(bytes);
 	}
 
-	public static void finalize(final WbxmlContext cntx, final OutputStream os) throws IOException {
-		// Used to write out the document if string tables are specified.
-	}
-	
 	
 	private static void writeByte(final OutputStream os, int value) throws IOException {
 		if (log.isDebugEnabled()) {
