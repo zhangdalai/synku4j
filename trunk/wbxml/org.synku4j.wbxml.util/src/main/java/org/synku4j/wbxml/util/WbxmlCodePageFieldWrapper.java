@@ -107,4 +107,6 @@ public final class WbxmlCodePageFieldWrapper implements WbxmlCodePageField {
 	public String toString() {
 		return "CodePageFieldWrapper [fieldIdx=" + fieldIdx + ", fieldName=" + fieldName + ", modelClass=" + modelClass + ", pageIdx=" + pageIdx + "]";
 	}
+	
+	
 }

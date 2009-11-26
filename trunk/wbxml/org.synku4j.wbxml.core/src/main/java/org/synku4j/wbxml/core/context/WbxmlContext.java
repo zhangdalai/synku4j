@@ -21,7 +21,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
+import org.synku4j.wbxml.core.WbxmlCodePage;
 import org.synku4j.wbxml.core.WbxmlCodePageField;
+import org.synku4j.wbxml.core.WbxmlDocument;
 
 /**
  * The <code>WbxmlContext</code> class manages the state.
@@ -39,7 +41,6 @@ public class WbxmlContext {
 	private Stack<WbxmlCodePageField> elements = new Stack<WbxmlCodePageField>();
 	private boolean captureXML;
 	private StringBuilder xml;
-//	private Stack<WbxmlPage> codePages = new Stack<WbxmlPage>();
 	private List<WbxmlCodePageField> codePageFields = new ArrayList<WbxmlCodePageField>();
 	
 	public WbxmlContext() {
@@ -59,26 +60,10 @@ public class WbxmlContext {
 
 	public void reset() {
 		elements.clear();
-//		codePages.clear();
 		if (captureXML) {
 			xml = new StringBuilder();
 		}
 	}
-
-//	public void pushCodePage(WbxmlPage page) {
-//		codePages.push(page);
-//	}
-//	
-//	public WbxmlPage popCodePage() {
-//		return codePages.pop();
-//	}
-//
-//	public WbxmlPage peekCodePage() {
-//		if (codePages.isEmpty()) {
-//			return null;
-//		}
-//		return codePages.peek();
-//	}
 
 	public void setCaptureXML(boolean capture) {
 		captureXML = capture;
@@ -118,5 +103,14 @@ public class WbxmlContext {
 
 	public void setOpaqueStrings(boolean opaqueStrings) {
 		this.opaqueStrings = opaqueStrings;
+	}
+
+	public WbxmlCodePage lookupCodePage(final String name, final int index, final int publicId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public WbxmlDocument lookupWbxmlDocument(final String name, final int index, final int publicId) {
+		return null;
 	}
 }
