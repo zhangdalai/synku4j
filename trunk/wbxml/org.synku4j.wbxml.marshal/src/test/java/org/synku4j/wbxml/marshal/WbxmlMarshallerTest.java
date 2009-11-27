@@ -8,6 +8,7 @@ import org.synku4j.wbxml.annotations.WbxmlPage;
 import org.synku4j.wbxml.core.WbxmlConstants;
 import org.synku4j.wbxml.core.context.WbxmlContext;
 import org.synku4j.wbxml.marshal.impl.DefaultWbxmlMarshaller;
+import org.synku4j.wbxml.util.HexDump;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -34,6 +35,9 @@ public class WbxmlMarshallerTest {
 		topClass.setField1("Some data");
 		
 		marshaller.marshal(cntx, baos, topClass);
+		StringBuilder sb = new StringBuilder();
+		HexDump.dump(baos.toByteArray(), sb);
+		System.out.println(sb.toString());
 		
 	}
 	

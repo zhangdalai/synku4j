@@ -21,8 +21,10 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -95,9 +97,39 @@ public final class WbxmlUtil {
 		return fields.toArray(new Field[0]);
 	}
 
-	
-	
-	
+	public static Map<Integer, Field> getFieldsMappedByToken(final Object source) {
+		final Map<Integer, Field> fieldMap = new HashMap<Integer, Field>();
+		
+		if (source == null) {
+			throw new NullPointerException("source object cannot be null");
+		}
+
+		final ArrayList<Class<?>> heirachy = new ArrayList<Class<?>>();
+		Class<? extends Object> clazz = (source instanceof Class<?>) ? (Class<?>) source : source.getClass();
+		do {
+			heirachy.add(clazz);
+			clazz = clazz.getSuperclass();
+		} while (!Object.class.equals(clazz));
+
+
+		// from the bottom up scan.
+		final ListIterator<Class<?>> liter = heirachy.listIterator(heirachy.size());
+		while (liter.hasPrevious()) {
+			clazz = liter.previous();
+			for (Field field : clazz.getDeclaredFields()) {
+				final WbxmlField wbxmlField = field.getAnnotation(WbxmlField.class);
+				if (wbxmlField != null) {
+					fieldMap.put(wbxmlField.index(), field);
+				}
+			}
+		}
+		
+		if (log.isDebugEnabled()) {
+			log.debug("Object class :"+source+" has ("+fieldMap.size()+") annotated fields");
+		}
+		
+		return fieldMap;
+	}
 	
 	/**
 	 * Introspect the given class, extracting all the codepage information, populating the supplied collection.
