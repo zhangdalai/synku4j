@@ -16,17 +16,16 @@
 
 package org.synku4j.wbxml.marshal.impl;
 
+import static org.synku4j.wbxml.encoder.WbxmlEncoder.inlineString;
+import static org.synku4j.wbxml.encoder.WbxmlEncoder.opaque;
 import static org.synku4j.wbxml.encoder.WbxmlEncoder.popElement;
 import static org.synku4j.wbxml.encoder.WbxmlEncoder.pushElement;
+import static org.synku4j.wbxml.encoder.WbxmlEncoder.pushOpaque;
+import static org.synku4j.wbxml.encoder.WbxmlEncoder.switchCodePage;
 import static org.synku4j.wbxml.encoder.WbxmlEncoder.writeEncoding;
 import static org.synku4j.wbxml.encoder.WbxmlEncoder.writePublicId;
 import static org.synku4j.wbxml.encoder.WbxmlEncoder.writeStringTable;
 import static org.synku4j.wbxml.encoder.WbxmlEncoder.writeWbxmlVersion;
-import static org.synku4j.wbxml.encoder.WbxmlEncoder.switchCodePage;
-import static org.synku4j.wbxml.encoder.WbxmlEncoder.pushOpaque;
-import static org.synku4j.wbxml.encoder.WbxmlEncoder.inlineString;
-import static org.synku4j.wbxml.encoder.WbxmlEncoder.opaque;
-
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,13 +33,19 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayDeque;
 import java.util.Collection;
+import java.util.Deque;
+import java.util.Map;
+import java.util.Stack;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.synku4j.wbxml.annotations.WbxmlField;
 import org.synku4j.wbxml.annotations.WbxmlPage;
+import org.synku4j.wbxml.core.WbxmlCodePageField;
 import org.synku4j.wbxml.core.WbxmlConstants;
+import org.synku4j.wbxml.core.WbxmlValue;
 import org.synku4j.wbxml.core.context.WbxmlContext;
 import org.synku4j.wbxml.marshal.WbxmlMarshaller;
 import org.synku4j.wbxml.marshal.WbxmlMarshallerException;
@@ -75,6 +80,18 @@ public class DefaultWbxmlMarshaller implements WbxmlMarshaller {
 		popElement(cntx, os);
 	}
 
+	/**
+	 * Marshall the supplied trigraph, as defined by the target object, utilizing the annotations attached
+	 * to the object referenced by the target.
+	 * 
+	 * @param cntx the marshalling context.
+	 * @param os the output stream.
+	 * @param target the object to be marshalled.
+	 * @param currentPage the current wbxml code page.
+	 * @param filters an array of filters which can be applied to limit the fields to be marshalled.
+	 * @throws IOException
+	 * @throws WbxmlMarshallerException
+	 */
 	private void doMarshal(final WbxmlContext cntx, final OutputStream os, final Object target, final WbxmlPage currentPage, final String... filters) 
 	throws IOException, WbxmlMarshallerException 
 	{
@@ -103,6 +120,8 @@ public class DefaultWbxmlMarshaller implements WbxmlMarshaller {
 		 }
 	}
 	
+	/**
+	 */
 	private void processField(final WbxmlContext cntx, OutputStream os, Field field, Object target, WbxmlPage currentPage, String[] filters) 
 	throws IOException, WbxmlMarshallerException
 	{
@@ -247,108 +266,32 @@ public class DefaultWbxmlMarshaller implements WbxmlMarshaller {
 		// table.
 		writeStringTable(os, 0);
 	}
+	
+	@Override
+	public <T> T unmarshal(WbxmlContext cntx, InputStream is, Class<T> targetClass, String... filter) throws IOException, WbxmlMarshallerException {
+		 T target;
+		 try {
+			 target = targetClass.newInstance();
+		 } catch (Exception e) {
+			 if (log.isWarnEnabled()) {
+				 log.warn("Unable to create an instance of the target class", e);
+			 }
+			 
+			 throw new WbxmlMarshallerException("Exception raised creating new instance of(" + targetClass + ")", e);
+		 }
+		 
+		 
+		 final ParseStackEntry pse = new ParseStackEntry(target);
+		 
+		 
+		 final Deque<ParseStackEntry> parseStack = new ArrayDeque<ParseStackEntry>();
+		 parseStack.push(pse);		 
+		
+		
+		return target;
+	}
 
-	// private static final Log log =
-	// LogFactory.getLog(DefaultWbxmlMarshaller.class);
-	//
-	// public DefaultWbxmlMarshaller() {
-	// }
-	//
-	// @Override
-	// public <T> void marshal(final WbxmlContext cntx, final OutputStream os,
-	// final T t, final String... filters) throws IOException,
-	// WbxmlMarshallerException {
-	// cntx.reset();
-	//
-	// Class<? extends Object> clazz = t.getClass();
-	// if (log.isDebugEnabled()) {
-	// log.debug("marshal top class = " + clazz);
-	// }
-	//
-	// // The top level object specifies the root element via a field
-	// // specification on the object
-	// // TODO : we may want to specify this in the context for convienience.
-	// final WbxmlField root = clazz.getAnnotation(WbxmlField.class);
-	// if (root == null) {
-	// throw new
-	// WbxmlMarshallerException("Root object must be annoted with @WbxlField");
-	// }
-	//
-	// if (log.isDebugEnabled()) {
-	// log.debug("Root field = " + root);
-	// }
-	//
-	// final WbxmlPage page = getPage(clazz);
-	// if (page == null) {
-	// throw new
-	// WbxmlMarshallerException("Root object must be annoted with @WbxlPage");
-	// }
-	//
-	// writePreamble(cntx, os, page);
-	// // cntx.pushCodePage(page);
-	// //
-	// // WbxmlEncoder.pushElement(cntx, os, root, true);
-	//
-	// doMarshal(cntx, os, t, filters);
-	//
-	// WbxmlEncoder.popElement(cntx, os);
-	//
-	// WbxmlEncoder.finalize(cntx, os);
-	// }
-	//
-	// private void doMarshal(final WbxmlContext cntx, final OutputStream os,
-	// final Object target, final String... filters) throws IOException,
-	// WbxmlMarshallerException {
-	// Class<? extends Object> clazz = target.getClass();
-	//
-	// // Check the context to see if the codepage has changed.
-	// final WbxmlPage page = getPage(clazz);
-	// final WbxmlPage current = cntx.peekCodePage();
-	//
-	// if (log.isDebugEnabled()) {
-	// log.debug("target class = " + clazz + ", page = " + page);
-	// }
-	//
-	// if (current == null && page == null) {
-	// throw new
-	// WbxmlMarshallerException("Unable to determin current codepage");
-	// }
-	//
-	// boolean popCodePage = false;
-	// if (page != null && current == null || !(current.index() ==
-	// page.index())) {
-	// popCodePage = true;
-	// pushCodePage(cntx, os, page);
-	// }
-	//
-	// // If we have no page, then we need to blow out. Or do we simply use the
-	// // current code page ?
-	// for (Field field : WbxmlUtil.getFields(target)) {
-	// processField(cntx, os, field, target, filters);
-	// }
-	//
-	// if (popCodePage) {
-	// popCodePage(cntx, os);
-	// }
-	// }
-	//
-	// @Override
-	// public <T> T unmarshal(final WbxmlContext cntx, final InputStream is,
-	// final Class<T> targetClass, final String... filter) throws IOException,
-	// WbxmlMarshallerException {
-	// T target;
-	// try {
-	// target = targetClass.newInstance();
-	// } catch (Exception e) {
-	// throw new
-	// WbxmlMarshallerException("Exception raised creating new instance of(" +
-	// targetClass + ")", e);
-	// }
-	//
-	// // Setup the stack, and the root object.
-	// final Stack<ParseStackEntry> parseStack = new Stack<ParseStackEntry>();
-	// final ParseStackEntry pse = new ParseStackEntry(target);
-	// parseStack.push(pse);
+
 	//
 	// final boolean captureXML = cntx.captureXML();
 	// final DefaultCodePageFinder finder = new
@@ -867,11 +810,79 @@ public class DefaultWbxmlMarshaller implements WbxmlMarshaller {
 	// }
 	// }
 
-	@Override
-	public <T> T unmarshal(WbxmlContext cntx, InputStream is, Class<T> t, String... filter) throws IOException, WbxmlMarshallerException {
-		// TODO Auto-generated method stub
-		return null;
+
+	
+	private static final class ParseStackEntry {
+		private final Object target;
+
+		private final Map<Integer, Field> fields;
+
+		ParseStackEntry(final Object target) {
+			fields = WbxmlUtil.getFieldsMappedByToken(target);
+			this.target = target;
+		}
+
+		public boolean hasFields() {
+			return fields.isEmpty();
+		}
+		
+		public Field findField(final WbxmlCodePageField cp) {
+			// Find order.
+			// 1) The codepage index matches.
+			// 2) The codepage model matches the classes declared on the field.
+			// 3) There is only one field, and it's an object field.
+			// 4) There is only one field, and it's been annotated with a WbxmlField
+			final int token = cp.getToken();
+			final Field fld = fields.get(token);
+				
+			
+			
+			
+			
+//			for (Field f : fields) {
+//				final WbxmlField wbxmlField = f.getAnnotation(WbxmlField.class);
+//				final int idx = wbxmlField.index();
+//				if (idx != -1 && idx == cp.getToken()) {
+//					f.setAccessible(true);
+//					return f;
+//				} else {
+//					// Check to see if the classes match
+//					Class<?> modelClass = cp.getModelClass();
+//
+//					if (modelClass != null) {
+//						for (Class<?> c : wbxmlField.classes()) {
+//							if (c.equals(modelClass)) {
+//								return f;
+//							}
+//						}
+//					}
+//				}
+//			}
+
+			// last gasp.....
+//			if (fields.length == 1) {
+//				// Object fields can contain any of the model entities.
+//				Type t = fields[0].getType();
+//				if (t.equals(Object.class)) {
+//					return fields[0];
+//				}
+//
+//				final WbxmlField wbxmlField = fields[0].getAnnotation(WbxmlField.class);
+//				Class<?>[] classes = wbxmlField.classes();
+//				for (Class<?> cls : classes) {
+//					if (WbxmlValue.class.equals(cls)) {
+//						return fields[0];
+//					}
+//				}
+//			}
+
+			return null;
+		}
 	}
+
+	
+	
+	
 
 	private static final WbxmlField getWbxmlField(Class<?> clazz, boolean isRoot) throws WbxmlMarshallerException {
 		// Check to see if the root field is specified on the class
