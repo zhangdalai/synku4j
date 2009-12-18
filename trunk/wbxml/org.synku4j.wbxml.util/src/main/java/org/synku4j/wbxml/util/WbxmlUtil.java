@@ -22,6 +22,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -61,6 +62,9 @@ public final class WbxmlUtil {
 	 * Note, this search from the bottom up, which means fields in the base class
 	 * are found before those in the derived class.
 	 * 
+	 * NOTE: We should do some name clashing checks here, duplicate fields in classes
+	 *       will more than likely screw up the marshaling.
+	 * 
 	 * @param source the source object.
 	 * @return the annotated fields.
 	 */
@@ -76,7 +80,7 @@ public final class WbxmlUtil {
 			clazz = clazz.getSuperclass();
 		} while (!Object.class.equals(clazz));
 
-		final List<Field> fields = new ArrayList<Field>();
+		final List<Field> fields = new LinkedList<Field>();
 
 		// from the bottom up scan.
 		final ListIterator<Class<?>> liter = heirachy.listIterator(heirachy.size());
