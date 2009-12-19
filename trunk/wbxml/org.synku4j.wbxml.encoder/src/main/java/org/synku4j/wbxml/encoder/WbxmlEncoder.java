@@ -62,7 +62,7 @@ public final class WbxmlEncoder {
 		if (log.isDebugEnabled()) {
 			final int majorVersion = (version >>> 4) + 1;
 			final int minorVersion = (version & 0xF);
-			log.debug("writeWbxmlVersion [ 0x" + Integer.toHexString(version) + "] [" + majorVersion + "].[" + minorVersion + "]");
+			log.debug("writeWbxmlVersion [0x" + Integer.toHexString(version) + "] [" + majorVersion + "].[" + minorVersion + "]");
 		}
 		writeByte(os, version);
 	}

@@ -55,6 +55,8 @@ class MarshalDelegate {
 	
 	private static final Log log = LogFactory.getLog(MarshalDelegate.class);
 	
+	
+	
 	protected MarshalDelegate() {
 	}
 	
@@ -64,7 +66,7 @@ class MarshalDelegate {
 		cntx.reset();
 		final Class<? extends Object> clazz = source.getClass();
 		final WbxmlPage page = getWbxmlPage(clazz, true);
-		final WbxmlField root = getWbxmlField(clazz, false);
+		final WbxmlField root = getWbxmlField(clazz, true);
 		
 		writePreamble(cntx, os, page);
 		pushElement(cntx, os, root.index(), true);
@@ -96,7 +98,6 @@ class MarshalDelegate {
 		 if (popCodePage) {
 			 switchCodePage(os, page.index());
 		 }
-		
 	}
 
 	private void writePreamble(WbxmlContext cntx, OutputStream os, WbxmlPage page) throws IOException {
@@ -152,6 +153,7 @@ class MarshalDelegate {
 		
 		//
 		// A Ghost element is a container for elements which will be parsed.
+		// Do not generate a start or end element for this field.
 		//
 		final boolean ghostElement = wbxmlField.index() == WbxmlField.NO_INDEX;
 		if (ghostElement) {
@@ -166,6 +168,10 @@ class MarshalDelegate {
 		try {
 			value = field.get(target);
 		} catch (Exception e) {
+			// This will terminate the marshaling. Is this always right ?
+			if (log.isWarnEnabled()) {
+				log.warn("Exception thrown getting value via field ("+field+")", e);
+			}
 			throw new WbxmlMarshallerException(e);
 		}
 
@@ -175,11 +181,18 @@ class MarshalDelegate {
 
 		if (value == null) {
 			if (wbxmlField != null && wbxmlField.required()) {
-				throw new WbxmlMarshallerException("Field (" + wbxmlField.name() +"), is marked required but is null");
+				throw new WbxmlMarshallerException("Field (" + wbxmlField.name() +"), is marked required but is null. Processing cannot continue.");
 			}
+			
+			if (log.isDebugEnabled()) {
+				log.debug("Field ("+wbxmlField.name()+") is null, it will not be written to the stream.");
+			}
+			
 			return;
 		} else if (Collection.class.isAssignableFrom(value.getClass())) {
-			final ParameterizedType ptype = (ParameterizedType) fieldType;
+			if (log.isDebugEnabled()) {
+				log.debug("Field ("+wbxmlField.name()+") is a collection");
+			}
 
 			// TODO :
 			//
@@ -191,16 +204,17 @@ class MarshalDelegate {
 			// We have a collection, marshal through the values;
 			final Collection<?> values = (Collection<?>) value;
 			if (wbxmlField.required() && values.isEmpty()) {
-				throw new WbxmlMarshallerException("Field (" + wbxmlField.name() +"), is marked required but is empty");
+				throw new WbxmlMarshallerException("Field (" + wbxmlField.name() +"), is marked required but is empty. Processing cannot continue.");
 			}
 
 			if (!ghostElement) {
 				pushElement(cntx, os, wbxmlField.index(), true);
 			}
 
+			// Get field type for each item as it may not be declared on the 
 			WbxmlField innerField;
 			for (Object obj : values) {
-				innerField = obj.getClass().getAnnotation(WbxmlField.class);
+				innerField = getWbxmlField(obj.getClass(), false);
 
 				if (ghostElement && innerField != null) {
 					pushElement(cntx, os, innerField.index(), true);
@@ -212,7 +226,6 @@ class MarshalDelegate {
 					} else {
 						inlineString(cntx, os, obj.toString());
 					}
-
 				} else {
 					doMarshal(cntx, os, obj, currentPage, filters);
 				}
@@ -252,8 +265,6 @@ class MarshalDelegate {
 			}
 		}
 	}
-
-	
 	
 	private static final WbxmlField getWbxmlField(Class<?> clazz, boolean isRoot) throws WbxmlMarshallerException {
 		// Check to see if the root field is specified on the class

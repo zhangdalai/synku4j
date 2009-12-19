@@ -16,36 +16,19 @@
 
 package org.synku4j.wbxml.marshal.impl;
 
-import static org.synku4j.wbxml.encoder.WbxmlEncoder.inlineString;
-import static org.synku4j.wbxml.encoder.WbxmlEncoder.opaque;
-import static org.synku4j.wbxml.encoder.WbxmlEncoder.popElement;
-import static org.synku4j.wbxml.encoder.WbxmlEncoder.pushElement;
-import static org.synku4j.wbxml.encoder.WbxmlEncoder.pushOpaque;
-import static org.synku4j.wbxml.encoder.WbxmlEncoder.switchCodePage;
-import static org.synku4j.wbxml.encoder.WbxmlEncoder.writeEncoding;
-import static org.synku4j.wbxml.encoder.WbxmlEncoder.writePublicId;
-import static org.synku4j.wbxml.encoder.WbxmlEncoder.writeStringTable;
-import static org.synku4j.wbxml.encoder.WbxmlEncoder.writeWbxmlVersion;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayDeque;
-import java.util.Collection;
 import java.util.Deque;
 import java.util.Map;
-import java.util.Stack;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.synku4j.wbxml.annotations.WbxmlField;
 import org.synku4j.wbxml.annotations.WbxmlPage;
 import org.synku4j.wbxml.core.WbxmlCodePageField;
-import org.synku4j.wbxml.core.WbxmlConstants;
-import org.synku4j.wbxml.core.WbxmlValue;
 import org.synku4j.wbxml.core.context.WbxmlContext;
 import org.synku4j.wbxml.marshal.WbxmlMarshaller;
 import org.synku4j.wbxml.marshal.WbxmlMarshallerException;
@@ -65,7 +48,6 @@ public class DefaultWbxmlMarshaller implements WbxmlMarshaller {
 	@Override
 	public <T> void marshal(final WbxmlContext cntx, final OutputStream os, final T t, final String... filter) throws IOException,
 			WbxmlMarshallerException {
-		cntx.reset();
 		final Class<? extends Object> clazz = t.getClass();
 		final WbxmlField root = getWbxmlField(clazz, true);
 		final WbxmlPage page = getWbxmlPage(clazz, true);
@@ -73,199 +55,10 @@ public class DefaultWbxmlMarshaller implements WbxmlMarshaller {
 		if (log.isDebugEnabled()) {
 			log.debug("Start marshaling. top class = " + clazz + ", root =" + root + ", page=" + page);
 		}
-
-		writePreamble(cntx, os, page);
-		pushElement(cntx, os, root.index(), true);
-		doMarshal(cntx, os, t, page, filter);
-		popElement(cntx, os);
+		
+		new MarshalDelegate().marshal(cntx, os, t, page, filter);
 	}
 
-	/**
-	 * Marshall the supplied trigraph, as defined by the target object, utilizing the annotations attached
-	 * to the object referenced by the target.
-	 * 
-	 * @param cntx the marshalling context.
-	 * @param os the output stream.
-	 * @param target the object to be marshalled.
-	 * @param currentPage the current wbxml code page.
-	 * @param filters an array of filters which can be applied to limit the fields to be marshalled.
-	 * @throws IOException
-	 * @throws WbxmlMarshallerException
-	 */
-	private void doMarshal(final WbxmlContext cntx, final OutputStream os, final Object target, final WbxmlPage currentPage, final String... filters) 
-	throws IOException, WbxmlMarshallerException 
-	{
-		final Class<? extends Object> clazz = target.getClass();
-		final WbxmlPage page = getWbxmlPage(clazz);
-
-		if (log.isDebugEnabled()) {
-			log.debug("target class = " + clazz + ", page = " + page);
-		}
-
-		if (currentPage == null && page == null) {
-			throw new WbxmlMarshallerException("Unable to determin current codepage");
-		}
-		
-		boolean popCodePage = false;
-		if (page != null && currentPage == null || !(currentPage.index() ==	page.index())) {
-			popCodePage = true;
-		}
-		
-		 for (Field field : WbxmlUtil.getFields(target)) {
-			 processField(cntx, os, field, target, (page == null ? currentPage : page), filters);
-		 }
-		 
-		 if (popCodePage) {
-			 switchCodePage(os, page.index());
-		 }
-	}
-	
-	/**
-	 */
-	private void processField(final WbxmlContext cntx, OutputStream os, Field field, Object target, WbxmlPage currentPage, String[] filters) 
-	throws IOException, WbxmlMarshallerException
-	{
-		if (log.isDebugEnabled()) {
-			 log.debug("processField field = " + field);
-		}
-		
-		field.setAccessible(true);
-		
-		final WbxmlField wbxmlField = field.getAnnotation(WbxmlField.class);
-		
-		final boolean ghostElement = wbxmlField.index() == WbxmlField.NO_INDEX;
-		if (ghostElement) {
-			if (log.isDebugEnabled()) {
-				log.debug("ghost element :" + wbxmlField);
-			}
-		}
-
-		final Type fieldType = field.getGenericType();
-
-		Object value = null;
-		try {
-			value = field.get(target);
-		} catch (Exception e) {
-			throw new WbxmlMarshallerException(e);
-		}
-
-		if (log.isDebugEnabled()) {
-			log.debug("Value of field (" + field + ") = " + value);
-		}
-
-		if (value == null) {
-			if (wbxmlField != null && wbxmlField.required()) {
-				throw new WbxmlMarshallerException("Field (" + wbxmlField.name() +"), is marked required but is null");
-			}
-			return;
-		} else if (Collection.class.isAssignableFrom(value.getClass())) {
-			final ParameterizedType ptype = (ParameterizedType) fieldType;
-
-			// TODO :
-			//
-			// in the case of a collection of strings we need to
-			// wrap each entry in the defined wbxml field.
-			// Objects need to be marshalled.
-			//
-
-			// We have a collection, marshal through the values;
-			final Collection<?> values = (Collection<?>) value;
-			if (wbxmlField.required() && values.isEmpty()) {
-				throw new WbxmlMarshallerException("Field (" + wbxmlField.name() +"), is marked required but is empty");
-			}
-
-			if (!ghostElement) {
-				pushElement(cntx, os, wbxmlField.index(), true);
-			}
-
-			WbxmlField innerField;
-			for (Object obj : values) {
-				innerField = obj.getClass().getAnnotation(WbxmlField.class);
-
-				if (ghostElement && innerField != null) {
-					pushElement(cntx, os, innerField.index(), true);
-				}
-
-				if (obj instanceof String) {
-					if (cntx.isOpaqueStrings()) {
-						pushOpaque(cntx, os, innerField.index(), obj.toString().getBytes());
-					} else {
-						inlineString(cntx, os, obj.toString());
-					}
-
-				} else {
-					doMarshal(cntx, os, obj, currentPage, filters);
-				}
-
-				if (ghostElement && innerField != null) {
-					popElement(cntx, os);
-				}
-			}
-			if (!ghostElement) {
-				popElement(cntx, os);
-			}
-		} else if (value instanceof byte[]) {
-			pushOpaque(cntx, os, wbxmlField.index(), (byte[]) value);
-		} else if (value instanceof Boolean) {
-			pushElement(cntx, os, wbxmlField.index(), false);
-		} else {
-			final Class<?> valueClass = value.getClass();
-
-			if (!ghostElement) {
-				pushElement(cntx, os, wbxmlField.index(), true);
-			}
-
-			final WbxmlPage page = valueClass.getAnnotation(WbxmlPage.class);
-			if (page != null) {
-				doMarshal(cntx, os, value, page, filters);
-			} else {
-				if (cntx.isOpaqueStrings()) {
-					opaque(cntx, os, value.toString().getBytes());
-				} else {
-					inlineString(cntx, os, value.toString());
-				}
-			}
-
-			if (!ghostElement) {
-				popElement(cntx, os);
-			}
-		}
-	}
-
-	private void writePreamble(WbxmlContext cntx, OutputStream os, WbxmlPage page) throws IOException {
-		int version = cntx.getWbxmlVersion();
-		int encoding = cntx.getWbxmlEncoding();
-		final int publicId = page.publicId();
-
-		if (version == 0) {
-			if (log.isWarnEnabled()) {
-				log.warn("No WBXML version specified in context, default to 1.2");
-			}
-			version = WbxmlConstants.WBXML_VERSION_1_2;
-		}
-
-		if (publicId == 0) {
-			if (log.isWarnEnabled()) {
-				log.warn("Unknown public id for document, recipient may reject");
-			}
-		}
-
-		if (encoding == 0) {
-			if (log.isWarnEnabled()) {
-				log.warn("Unspecified document encoding, falling back to UTF-8");
-			}
-			encoding = WbxmlConstants.WBXML_ENCODING_UTF8;
-		}
-
-		writeWbxmlVersion(os, version);
-		writePublicId(os, publicId);
-		writeEncoding(os, encoding);
-
-		// TODO : Add support in the context for creating a string table.
-		// This will require all strings to be cached then referenced into this
-		// table.
-		writeStringTable(os, 0);
-	}
 	
 	@Override
 	public <T> T unmarshal(WbxmlContext cntx, InputStream is, Class<T> targetClass, String... filter) throws IOException, WbxmlMarshallerException {
